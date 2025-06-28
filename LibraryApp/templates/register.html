@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Library Registration</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+</head>
+
+<body class="bg-registration d-flex align-items-center justify-content-center">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-6">
+                <div class="card glass-card shadow-lg border-0">
+                    <div class="card-body p-5">
+                        <h2 class="text-center mb-4 fw-bold text-black">Library Registration</h2>
+
+                        <form method="POST" autocomplete="off" novalidate>
+                            {% csrf_token %}
+
+                            <!-- Username -->
+                            <div class="mb-4">
+                                <label for="id_username" class="form-label">Username</label>
+                                <input type="text" name="username" id="id_username" class="form-control" placeholder="Enter your username"
+                                       value="{{ user_form.username.value|default:'' }}">
+                                {% if user_form.username.errors %}
+                                    <div class="text-danger small mt-1">{{ user_form.username.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Email -->
+                            <div class="mb-4">
+                                <label for="id_email" class="form-label">Email</label>
+                                <input type="email" name="email" id="id_email" class="form-control" placeholder="Enter your email"
+                                       value="{{ user_form.email.value|default:'' }}">
+                                {% if user_form.email.errors %}
+                                    <div class="text-danger small mt-1">{{ user_form.email.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Password -->
+                            <div class="mb-4">
+                                <label for="id_password" class="form-label">Password</label>
+                                <input type="password" name="password" id="id_password" class="form-control" placeholder="Enter your password">
+                                {% if user_form.password.errors %}
+                                    <div class="text-danger small mt-1">{{ user_form.password.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div class="mb-4">
+                                <label for="id_confirm_password" class="form-label">Confirm Password</label>
+                                <input type="password" name="confirm_password" id="id_confirm_password" class="form-control" placeholder="Confirm your password">
+                                {% if user_form.confirm_password.errors %}
+                                    <div class="text-danger small mt-1">{{ user_form.confirm_password.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- User Type -->
+                            <div class="mb-4">
+                                <label class="form-label">Registering As</label>
+                                <div class="d-flex gap-3">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="user_type" id="student" value="student"
+                                            {% if register_form.user_type.value == "student" %}checked{% endif %}>
+                                            <label class="form-check-label" for="student">Student</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="user_type" id="faculty" value="faculty"
+                                            {% if register_form.user_type.value == "faculty" %}checked{% endif %}>
+                                            <label class="form-check-label" for="faculty">Faculty</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="user_type" id="admin" value="admin"
+                                            {% if register_form.user_type.value == "admin" %}checked{% endif %}>
+                                            <label class="form-check-label" for="admin">Admin</label>
+                                    </div>
+                                </div>
+                                {% if register_form.user_type.errors %}
+                                    <div class="text-danger small mt-1">{{ register_form.user_type.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Submit -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow">Register</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
