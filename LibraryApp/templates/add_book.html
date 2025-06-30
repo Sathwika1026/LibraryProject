@@ -1,11 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container mt-5 text-white">
-    <h2>Add a New Book</h2>
+    <h2 class="mb-4">Add a New Book</h2>
+
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Add Book</button>
+        <button type="submit" name="submit_book" class="btn btn-success">Add Book</button>
+    </form>
+
+    <hr class="my-4">
+
+    <h4>Upload Excel File</h4>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ excel_form.as_p }}
+        <button type="submit" name="submit_excel" class="btn btn-info">Upload</button>
     </form>
 </div>
 {% endblock %}

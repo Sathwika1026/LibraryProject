@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5 text-white">
+    <h2>Edit Book</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Update Book</button>
+        <a href="{% url 'view_books' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

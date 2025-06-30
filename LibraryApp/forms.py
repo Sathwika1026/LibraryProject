@@ -45,4 +45,8 @@ class RegisterForm(forms.ModelForm):
 class BookForm(forms.ModelForm):
     class Meta:
         model = Book
-        fields = ['title', 'author', 'description']
+        fields = ['title', 'category', 'author', 'copies', 'description']
+
+class ExcelUploadForm(forms.Form):
+    file = forms.FileField(label="Upload Excel File")
+

@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from  LibraryApp import views
+from LibraryApp.views import edit_profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,4 +31,16 @@ urlpatterns = [
     path('add-book/', views.add_book, name='add_book'),  # Optional if you use it
     path('profile/', views.profile, name='profile'),   
     
+
+    path('borrow/<int:book_id>/', views.borrow_book, name='borrow_book'),
+    path('my-books/', views.my_books, name='my_books'),
+    path('admin-borrows/', views.borrowed_books_admin, name='admin_borrowed_books'),
+
+    path('edit-book/<int:book_id>/', views.edit_book, name='edit_book'),
+    path('delete-book/<int:book_id>/', views.delete_book, name='delete_book'),
+
+    path('my-books/', views.my_books, name='my_books'),
+    path('return-book/<int:borrow_id>/', views.return_book, name='return_book'),
+
+    path('edit-profile/', edit_profile, name='edit_profile'),
 ]

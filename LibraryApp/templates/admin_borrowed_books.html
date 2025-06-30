@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h3>All Borrowed Books</h3>
+    <ul class="list-group">
+        {% for borrow in borrows %}
+        <li class="list-group-item">
+            <strong>{{ borrow.user.username }}</strong> borrowed <em>{{ borrow.book.title }}</em> at {{ borrow.borrowed_at }}
+        </li>
+        {% empty %}
+        <li class="list-group-item">No books borrowed yet.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
