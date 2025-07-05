@@ -48,11 +48,10 @@ def login_view(request):
 
             messages.success(request, f"Welcome back, {user.username}!")
 
-            # Redirect based on user type
-            return redirect('home')  # you can change redirection if needed
+            return redirect('home') 
         else:
             messages.error(request, "Invalid username or password.")
-            return redirect('login')  # reload login form
+            return redirect('login')  
 
     return render(request, 'login.html')
 
@@ -143,11 +142,11 @@ def borrow_book(request, book_id):
         messages.error(request, "This book is currently unavailable.")
         return redirect('view_books')
 
-    # Decrease available copies and save
+    
     book.copies -= 1
     book.save()
 
-    # Save borrow record
+
     Borrow.objects.create(user=request.user, book=book)
     messages.success(request, f"You borrowed: {book.title}")
     return redirect('view_books')
@@ -196,11 +195,9 @@ def delete_book(request, book_id):
 def return_book(request, borrow_id):
     borrow = Borrow.objects.get(id=borrow_id, user=request.user)
 
-    # Increase the book's copies
     borrow.book.copies += 1
     borrow.book.save()
 
-    # Delete the borrow record
     borrow.delete()
 
     messages.success(request, f"Returned: {borrow.book.title}")
