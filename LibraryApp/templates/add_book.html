@@ -1,21 +1,129 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-<div class="container mt-5 text-white">
-    <h2 class="mb-4">Add a New Book</h2>
+<style>
+    .form-section {
+        background-color: #1e1e1e;
+        padding: 35px;
+        border-radius: 16px;
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.03);
+        margin-bottom: 40px;
+        transition: all 0.3s ease-in-out;
+    }
 
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" name="submit_book" class="btn btn-success">Add Book</button>
-    </form>
+    .form-section h3 {
+        color: #ffffff;
+        margin-bottom: 25px;
+        font-weight: 600;
+        font-size: 1.75rem;
+    }
 
-    <hr class="my-4">
+    .form-label {
+        color: #cccccc;
+        font-weight: 500;
+        margin-bottom: 6px;
+    }
 
-    <h4>Upload Excel File</h4>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ excel_form.as_p }}
-        <button type="submit" name="submit_excel" class="btn btn-info">Upload</button>
-    </form>
+    .form-control,
+    .form-select {
+        background-color: #2a2a2a;
+        color: #ffffff;
+        border: 1px solid #444;
+        border-radius: 10px;
+        padding: 10px 15px;
+        font-size: 0.95rem;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #5e9bff;
+        box-shadow: 0 0 0 0.2rem rgba(94, 155, 255, 0.25);
+        outline: none;
+    }
+
+    .form-control::placeholder {
+        color: #999;
+    }
+
+    textarea.form-control {
+        height: 150px !important;
+        resize: vertical;
+    }
+
+    .btn {
+        border-radius: 30px;
+        padding: 10px 25px;
+        font-weight: 500;
+    }
+
+    .btn-info,
+    .btn-success {
+        color: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-success:hover,
+    .btn-info:hover {
+        opacity: 0.9;
+    }
+
+    hr {
+        border-top: 1px solid #444;
+    }
+</style>
+
+<div class="container mt-5">
+    <!-- 📘 Add Book Form -->
+    <div class="form-section">
+        <h3><i class="fas fa-plus-circle me-2"></i> Add a New Book</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row">
+                {% for field in form %}
+                    <div class="mb-3 {% if field.name == 'description' %}col-12{% else %}col-md-6{% endif %}">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {% if field.name == 'description' %}
+                            {{ field.as_widget|safe }}
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+                        {% if field.errors %}
+                            <div class="text-danger small">{{ field.errors|join:", " }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                <button type="submit" name="submit_book" class="btn btn-success">
+                    <i class="fas fa-book-medical me-1"></i> Add Book
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- 📄 Excel Upload Form -->
+    <div class="form-section">
+        <h3><i class="fas fa-file-excel me-2"></i> Upload Excel File</h3>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                {% for field in excel_form %}
+                    <div class="mb-3 col-md-6">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="text-danger small">{{ field.errors|join:", " }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                <button type="submit" name="submit_excel" class="btn btn-info">
+                    <i class="fas fa-upload me-1"></i> Upload
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}

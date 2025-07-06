@@ -1,86 +1,87 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Library Home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% block content %}
 
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-</head>
-<body class="library-home">
+<style>
+    .library-card {
+        background-color: #1f1f1f;
+        border: 1px solid #2c2c2c;
+        border-radius: 12px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        color: #f8f9fa;
+    }
 
-<!-- ==================== Navbar ==================== -->
-<nav class="navbar navbar-expand-lg library-navbar shadow px-4 py-3">
-    <div class="container-fluid">
-        <a class="navbar-brand fw-bold text-white" href="#">📚 Library System</a>
-        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon bg-light"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav gap-2">
-                <li class="nav-item"><a class="nav-link text-white" href="{% url 'home' %}">Home</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="{% url 'view_books' %}">View Books</a></li>
-                
-                
-                {% if request.user.profile.user_type == 'admin' %}
-                <li class="nav-item"><a class="nav-link text-white" href="{% url 'add_book' %}">Add Book</a></li>
-                {% endif %}
+    .library-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+    }
 
-                <li class="nav-item"><a class="nav-link text-white" href="{% url 'profile' %}">Profile</a></li>
-                <li class="nav-item">
-                    <a class="btn btn-outline-light btn-sm ms-2" href="{% url 'logout' %}">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+    .library-card .card-title {
+        color: #ffffff;
+    }
 
+    .library-card .card-text {
+        color: #cccccc;
+    }
+
+    .btn-primary,
+    .btn-success,
+    .btn-info {
+        border-radius: 25px;
+        padding: 10px 20px;
+    }
+
+    .display-5 {
+        color: #ffffff;
+    }
+
+    .lead {
+        color: #bbbbbb;
+    }
+</style>
 
 <div class="container py-5">
-    <div class="text-center mb-5 text-white">
-        <h1 class="display-5 fw-bold">Welcome to the Library Management System</h1>
-        <p class="lead">Search, manage, and enjoy your reading journey.</p>
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">Welcome, {{ request.user.username }} 👋</h1>
+        <p class="lead">Your gateway to knowledge. Manage, explore, and grow with books.</p>
     </div>
 
-    <div class="row g-4">
-   
+    <div class="row g-4 justify-content-center">
+        <!-- 📖 Browse Books -->
         <div class="col-md-4">
             <div class="card library-card h-100 text-center p-4 shadow">
                 <div class="card-body">
-                    <h3 class="card-title">📖 Browse Books</h3>
-                    <p class="card-text">View and explore the full library collection.</p>
+                    <h3 class="card-title mb-3">📖 Browse Books</h3>
+                    <p class="card-text">Explore the entire library collection with powerful filters and categories.</p>
                     <a href="{% url 'view_books' %}" class="btn btn-primary mt-2">View Books</a>
                 </div>
             </div>
         </div>
 
+        <!-- ➕ Add Book (Only for Admin) -->
         {% if request.user.profile.user_type == 'admin' %}
         <div class="col-md-4">
             <div class="card library-card h-100 text-center p-4 shadow">
                 <div class="card-body">
-                    <h3 class="card-title">➕ Add Book</h3>
-                    <p class="card-text">Contribute by adding new books (admin access only).</p>
+                    <h3 class="card-title mb-3">➕ Add Book</h3>
+                    <p class="card-text">Admins can add new arrivals and update library records with ease.</p>
                     <a href="{% url 'add_book' %}" class="btn btn-success mt-2">Add Book</a>
                 </div>
             </div>
         </div>
         {% endif %}
 
-    
+        <!-- 👤 Profile -->
         <div class="col-md-4">
             <div class="card library-card h-100 text-center p-4 shadow">
                 <div class="card-body">
-                    <h3 class="card-title">👤 Your Profile</h3>
-                    <p class="card-text">View your profile, borrowed books and more.</p>
-                    <a href="{% url 'profile' %}" class="btn btn-info mt-2">Profile</a>
+                    <h3 class="card-title mb-3">👤 Your Profile</h3>
+                    <p class="card-text">Manage your profile, check borrowed books, and update details.</p>
+                    <a href="{% url 'profile' %}" class="btn btn-info mt-2">Go to Profile</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-</body>
-</html>
+{% endblock %}

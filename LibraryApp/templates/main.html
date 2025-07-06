@@ -1,0 +1,318 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Library Management</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <style>
+      .word {
+        opacity: 0;
+        display: inline;
+        transform: translateY(10px);
+        animation: fadeInUp 0.6s ease forwards;
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      body {
+        background-color: #121212;
+        color: #f8f9fa;
+      }
+      .nav-btn {
+        transition: 0.3s ease;
+      }
+      .nav-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+      }
+      .navbar-brand span {
+        color: #ffffff;
+      }
+
+      .fade-in-up {
+        animation: fadeInUp 1s ease-out forwards;
+        opacity: 0; /* Start hidden until animation runs */
+      }
+
+      .fixed-img {
+        height: 250px;
+        object-fit: cover;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+      }
+
+      .card-text {
+        height: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .card:hover {
+        transform: scale(1.02);
+        transition: 0.3s ease;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      }
+
+      .scroll-container {
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        display: flex;
+        gap: 1rem;
+        padding-bottom: 1rem;
+      }
+
+      .scroll-container::-webkit-scrollbar {
+        height: 8px;
+      }
+
+      .scroll-container::-webkit-scrollbar-thumb {
+        background: #666;
+        border-radius: 4px;
+      }
+
+      .book-card {
+        min-width: 250px;
+        max-width: 250px;
+        background-color: #1e1e1e;
+        color: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(255,255,255,0.05);
+      }
+
+      .book-card img {
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
+      }
+
+      .arrow-btn {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: #fff;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .arrow-btn:hover {
+        transform: scale(1.1);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <img
+            src="{% static 'images/logo.png' %}"
+            alt="Logo"
+            width="40"
+            height="40"
+            class="me-2"
+          />
+          <span class="fw-bold fs-5">Library Management</span>
+        </a>
+        <div class="d-flex">
+          <a href="{% url 'login' %}" class="btn btn-outline-light me-2 nav-btn"
+            >Sign In</a>
+          <a href="{% url 'register' %}" class="btn btn-light nav-btn"
+            >Sign Up</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="container-fluid px-5 px-md-5">
+      <div class="row flex-row align-items-center g-5 py-5">
+        <div class="col-lg-6 text-start" style="padding-left: 80px">
+          <h1 class="display-5 fw-bold lh-1 mb-3 text-white">
+            Welcome to Library Management System
+          </h1>
+          <p class="lead text-light" id="animated-text"></p>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-4"
+              >Get Started</a>
+          </div>
+        </div>
+        <div class="col-10 col-sm-8 col-lg-6">
+          <img
+            src="{% static 'images/Landingpage.png' %}"
+            class="img-fluid mx-auto d-block"
+            alt="Library Hero"
+            style="max-width: 100%; height: auto"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- ⭐ Top Books Section -->
+    <section class="bg-dark text-light py-5">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="mb-0">📚 Top Books</h2>
+          <div>
+            <button class="arrow-btn me-2" onclick="scrollBooks(-300)">&#8678;</button>
+            <button class="arrow-btn" onclick="scrollBooks(300)">&#8680;</button>
+          </div>
+        </div>
+
+        <div id="bookScroll" class="scroll-container">
+          <!-- Replace with your image paths -->
+          <div class="book-card">
+            <img src="{% static 'images/Book1.jpg' %}" alt="Book 1">
+            <div class="p-3">
+              <h5 class="fw-bold">Java Programming</h5>
+              <p class="small">Trusted book for Java beginners with programs & exercises.</p>
+            </div>
+          </div>
+
+          <div class="book-card">
+            <img src="{% static 'images/Book2.jpg' %}" alt="Book 2">
+            <div class="p-3">
+              <h5 class="fw-bold">ML with Python</h5>
+              <p class="small">Learn Machine Learning from scratch with real-world examples.</p>
+            </div>
+          </div>
+
+          <div class="book-card">
+            <img src="{% static 'images/book3.jpg' %}" alt="Book 3">
+            <div class="p-3">
+              <h5 class="fw-bold">ISRO Civil</h5>
+              <p class="small">Solved papers for Civil Engineering aspirants.</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="{% static 'images/book3.jpg' %}" alt="Book 3">
+            <div class="p-3">
+              <h5 class="fw-bold">ISRO Civil</h5>
+              <p class="small">Solved papers for Civil Engineering aspirants.</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="{% static 'images/book3.jpg' %}" alt="Book 3">
+            <div class="p-3">
+              <h5 class="fw-bold">ISRO Civil</h5>
+              <p class="small">Solved papers for Civil Engineering aspirants.</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="{% static 'images/book3.jpg' %}" alt="Book 3">
+            <div class="p-3">
+              <h5 class="fw-bold">ISRO Civil</h5>
+              <p class="small">Solved papers for Civil Engineering aspirants.</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="{% static 'images/book3.jpg' %}" alt="Book 3">
+            <div class="p-3">
+              <h5 class="fw-bold">ISRO Civil</h5>
+              <p class="small">Solved papers for Civil Engineering aspirants.</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="{% static 'images/book3.jpg' %}" alt="Book 3">
+            <div class="p-3">
+              <h5 class="fw-bold">ISRO Civil</h5>
+              <p class="small">Solved papers for Civil Engineering aspirants.</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="{% static 'images/book3.jpg' %}" alt="Book 3">
+            <div class="p-3">
+              <h5 class="fw-bold">ISRO Civil</h5>
+              <p class="small">Solved papers for Civil Engineering aspirants.</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="{% static 'images/book3.jpg' %}" alt="Book 3">
+            <div class="p-3">
+              <h5 class="fw-bold">ISRO Civil</h5>
+              <p class="small">Solved papers for Civil Engineering aspirants.</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="{% static 'images/book3.jpg' %}" alt="Book 3">
+            <div class="p-3">
+              <h5 class="fw-bold">ISRO Civil</h5>
+              <p class="small">Solved papers for Civil Engineering aspirants.</p>
+            </div>
+          </div>
+
+
+          <!-- Add more book cards here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-5 text-light" style="background-color: #1a1a1a;">
+      <div class="container text-center">
+        <h2 class="mb-4">Key Features</h2>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <i class="fas fa-book fa-3x mb-3 text-primary"></i>
+            <h5>Book Borrowing</h5>
+            <p>Borrow and return books online with real-time tracking.</p>
+          </div>
+          <div class="col-md-4">
+            <i class="fas fa-user-shield fa-3x mb-3 text-primary"></i>
+            <h5>Admin Dashboard</h5>
+            <p>Admins can add, edit, or delete books and manage users.</p>
+          </div>
+          <div class="col-md-4">
+            <i class="fas fa-envelope fa-3x mb-3 text-primary"></i>
+            <h5>OTP Verification</h5>
+            <p>Secure sign-up using email OTP verification system.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⭐ Footer -->
+    <footer class="bg-dark text-light py-4 mt-5">
+      <div class="container text-center">
+        <p class="mb-1">&copy; 2025 Library Management. All rights reserved.</p>
+        <p class="mb-0">
+          <a href="{% url 'home' %}" class="text-decoration-none text-light me-3">Home</a>
+          <a href="{% url 'login' %}" class="text-decoration-none text-light me-3">Sign In</a>
+          <a href="{% url 'register' %}" class="text-decoration-none text-light">Sign Up</a>
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const paragraph = `Search,  borrow, and manage books with ease. Whether you're a student, faculty, or admin — our platform keeps your library experience smart and simple.`;
+        const container = document.getElementById("animated-text");
+
+        const words = paragraph.split(" ");
+        words.forEach((word, index) => {
+          const span = document.createElement("span");
+          span.className = "word";
+          span.textContent = word + " ";
+          span.style.animationDelay = `${index * 0.1}s`;
+          container.appendChild(span);
+        });
+      });
+
+      function scrollBooks(amount) {
+        document.getElementById('bookScroll').scrollBy({ left: amount, behavior: 'smooth' });
+      }
+    </script>
+  </body>
+</html>

@@ -43,4 +43,7 @@ urlpatterns = [
     path('return-book/<int:borrow_id>/', views.return_book, name='return_book'),
 
     path('edit-profile/', edit_profile, name='edit_profile'),
+    path('send-otp/', views.send_otp, name='send_otp'),
+    path('',views.main),
+
 ]

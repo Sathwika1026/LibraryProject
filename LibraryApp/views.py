@@ -3,26 +3,76 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
-import pandas as pd
+import pandas as pd # type: ignore
 from django.db.models import Q
 from .forms import BookForm, ExcelUploadForm
 from .forms import UserForm, RegisterForm, BookForm
 from .models import Book, Borrow
 from django.contrib.auth.forms import UserChangeForm
+import random
+from django.core.mail import send_mail
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+@csrf_exempt
+def send_otp(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+
+        if not email:
+            return JsonResponse({'success': False, 'error': 'Email is required.'})
+
+        otp = str(random.randint(1000, 9999))
+        request.session['otp'] = otp
+        request.session['otp_email'] = email
+
+        try:
+            send_mail(
+                subject='Library Registration OTP',
+                message=f'Your OTP is: {otp}',
+                from_email='your_email@gmail.com',  # Make sure this is set up in settings.py
+                recipient_list=[email],
+                fail_silently=False,
+            )
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
 
 def register(request):
     if request.method == 'POST':
         user_form = UserForm(request.POST)
         register_form = RegisterForm(request.POST)
 
-        if user_form.is_valid() and register_form.is_valid():
+        entered_otp = request.POST.get('otp')
+        session_otp = request.session.get('otp')
+        session_email = request.session.get('otp_email')
+        entered_email = request.POST.get('email')
+
+        # OTP Validation
+        if entered_email != session_email:
+            user_form.add_error('otp', "The email does not match the one OTP was sent to.")
+        elif not session_otp:
+            user_form.add_error('otp', "No OTP found. Please click 'Send OTP' first.")
+        elif not entered_otp or entered_otp != session_otp:
+            user_form.add_error('otp', "Invalid OTP. Please check and try again.")
+        elif user_form.is_valid() and register_form.is_valid():
+            # Save User
             user = user_form.save(commit=False)
             user.set_password(user_form.cleaned_data['password'])
             user.save()
 
+            # Save Profile
             register = register_form.save(commit=False)
             register.user = user
             register.save()
+
+            # Clean up OTP from session
+            request.session.pop('otp', None)
+            request.session.pop('otp_email', None)
 
             messages.success(request, "Registered successfully! Please login.")
             return redirect('login')
@@ -34,6 +84,8 @@ def register(request):
         'user_form': user_form,
         'register_form': register_form
     })
+
+
 
 
 def login_view(request):
@@ -216,3 +268,5 @@ def edit_profile(request):
         form = UserChangeForm(instance=request.user)
 
     return render(request, 'edit_profile.html', {'form': form})
+def main(request):
+    return render(request,'main.html')

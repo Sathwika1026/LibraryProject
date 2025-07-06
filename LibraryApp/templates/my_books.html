@@ -1,27 +1,65 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<style>
+    .borrow-card {
+        background-color: #1e1e1e;
+        border: 1px solid #333;
+        border-radius: 16px;
+        color: #ffffff;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .borrow-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(255, 255, 255, 0.08);
+    }
+
+    .borrow-card .card-title {
+        color: #00d0ff;
+    }
+
+    .borrow-card .text-muted {
+        color: #cccccc !important;
+    }
+
+    .btn-return {
+        border-radius: 25px;
+    }
+
+    .no-books {
+        color: #ccc;
+        font-style: italic;
+        margin-top: 20px;
+    }
+</style>
+
 <div class="container mt-5">
-    <h3>My Borrowed Books</h3>
+    <h3 class="mb-4 text-white"><i class="fas fa-book-reader me-2"></i>My Borrowed Books</h3>
+    
+    {% if borrows %}
     <div class="row">
         {% for borrow in borrows %}
         <div class="col-md-4 mb-4">
-            <div class="card shadow">
-                <div class="card-body">
+            <div class="card borrow-card h-100 p-3">
+                <div class="card-body d-flex flex-column">
                     <h5 class="card-title">{{ borrow.book.title }}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">{{ borrow.book.author }}</h6>
-                    <p class="card-text"><strong>Category:</strong> {{ borrow.book.category }}</p>
-                    <p class="card-text">{{ borrow.book.description|default:"No description." }}</p>
-                    <p><strong>Borrowed on:</strong> {{ borrow.borrowed_at }}</p>
-
-                    <a href="{% url 'return_book' borrow.id %}" class="btn btn-danger btn-sm">Return</a>
+                    <p class="card-text mt-2"><strong>Category:</strong> {{ borrow.book.category }}</p>
+                    <p class="card-text small">{{ borrow.book.description|default:"No description." }}</p>
+                    <p class="card-text mt-auto"><strong>Borrowed on:</strong> {{ borrow.borrowed_at|date:"Y-m-d" }}</p>
+                    
+                    <a href="{% url 'return_book' borrow.id %}" class="btn btn-danger btn-sm mt-3 btn-return">
+                        <i class="fas fa-undo me-1"></i> Return
+                    </a>
                 </div>
             </div>
         </div>
-        {% empty %}
-        <p>You haven't borrowed any books.</p>
         {% endfor %}
     </div>
+    {% else %}
+        <p class="no-books text-center">You haven't borrowed any books yet.</p>
+    {% endif %}
 </div>
 
 {% endblock %}
