@@ -130,5 +130,5 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 
-EMAIL_HOST_USER = 'veerinateja@gmail.com'
-EMAIL_HOST_PASSWORD = 'rdpe hrhg ynlk pilg'
+EMAIL_HOST_USER = 'add your mail id'
+EMAIL_HOST_PASSWORD = 'add your temporary password'
