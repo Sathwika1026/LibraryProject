@@ -29,6 +29,7 @@ A fully functional web-based Library Management System built using Django. It en
 ## 📂 To enable otp verification 
 - add you mail id in settings.py file
 - also add you app password settings.py file
+- you can create your app file via the link : https://myaccount.google.com/apppasswords
 - which looks like
   ## EMAIL_HOST_USER = 'add mail id'
   ## EMAIL_HOST_PASSWORD = 'add app password'
